@@ -9,6 +9,5 @@ namespace VideoCollection.Model
         public Uri SourcePath { get; set; }
         public string VideoName { get; set; }
         public string Directory { get; set; }
-        //public List<string> directoryList = new List<string>();
     }
 }
