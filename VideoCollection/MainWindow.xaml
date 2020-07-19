@@ -14,19 +14,15 @@
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <ListView Grid.Column="0">
-            <ListViewItem HorizontalAlignment="Center">
-                <StackPanel Orientation="Horizontal">
-                    <Button Click="Button_Click">Добавить видео</Button>
-                </StackPanel>
-            </ListViewItem>
-        </ListView>
-        <ContentControl Grid.Column="1" Grid.ColumnSpan="3" Content="{Binding}"/>
+        <Grid VerticalAlignment="Top" Height="30">
+            <StackPanel Orientation="Horizontal">
+                <Button HorizontalAlignment="Left" Width="50" Click="Button_Click">Add</Button>
+                <Button HorizontalAlignment="Left" Margin="10, 0, 0, 0" Width="50">Edit</Button>
+            </StackPanel>
+        </Grid>
+        <Grid Margin="0, 30, 0, 0">
+            <ContentControl Grid.Row="1" Grid.RowSpan="7" Content="{Binding}"/>
+        </Grid>
     </Grid>
+    
 </Window>
