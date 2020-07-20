@@ -17,29 +17,32 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        <Grid Margin="136,0,0,0">
-            <Grid VerticalAlignment="Top">
-                <MediaElement Source="{Binding SourcePath}" Name="VideoOutput" Height="300" LoadedBehavior="Manual" MediaOpened="VideoOutput_MediaOpened"></MediaElement>
-            </Grid>
-            <Grid VerticalAlignment="Bottom" Height="70" Margin="0, 0, 0, 0">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Slider Margin="0,10,0,0" Name="TimeBarSlider" ValueChanged="TimeBarSlider_ValueChanged"></Slider>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="42*"/>
-                        <ColumnDefinition Width="179*"/>
-                        <ColumnDefinition Width="221*"/>
-                        <ColumnDefinition Width="221*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="VideoControlButton" Grid.Column="2" VerticalAlignment="Top" Height="30" Width="100" Click="Button_Click" Margin="61,0,61,0">Play</Button>
-                    <Slider Grid.Column="3" Name="VolumeSlider" ValueChanged="VolumeSlider_ValueChanged"></Slider>
-                    <Label Grid.Column="0" Content="{Binding Path=SourcePath}" Grid.ColumnSpan="2"></Label>
+        <ScrollViewer Margin="136,0,0,0">
+            <Grid>
+                <Grid VerticalAlignment="Top">
+                    <MediaElement Source="{Binding SourcePath}" Name="VideoOutput" Height="300" LoadedBehavior="Manual" MediaOpened="VideoOutput_MediaOpened" MouseDown="VideoOutput_MouseDown"></MediaElement>
+                </Grid>
+                <Grid VerticalAlignment="Bottom" Height="70" Margin="0, 0, 0, 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Slider Margin="0,10,0,0" Name="TimeBarSlider" ValueChanged="TimeBarSlider_ValueChanged"></Slider>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="42*"/>
+                            <ColumnDefinition Width="179*"/>
+                            <ColumnDefinition Width="221*"/>
+                            <ColumnDefinition Width="221*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="VideoControlButton" Grid.Column="2" VerticalAlignment="Top" Height="30" Width="100" Click="Button_Click">Play</Button>
+                        <Slider Grid.Column="3" Value="10" Name="VolumeSlider" ValueChanged="VolumeSlider_ValueChanged"></Slider>
+                        <Label Grid.Column="0" Content="{Binding Path=SourcePath}" Grid.ColumnSpan="2"></Label>
+                    </Grid>
                 </Grid>
             </Grid>
-        </Grid>
+
+        </ScrollViewer>
 
     </Grid>
 </UserControl>

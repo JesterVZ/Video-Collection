@@ -147,5 +147,22 @@ namespace VideoCollection.View
             TimeBarSlider.Maximum = time.TotalSeconds;
             timer.Start();
         }
+
+        private void VideoOutput_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (IsPaused)
+            {
+                IsPaused = false;
+                VideoOutput.Play();
+                VideoControlButton.Content = "Pause";
+
+            }
+            else
+            {
+                IsPaused = true;
+                VideoOutput.Pause();
+                VideoControlButton.Content = "Play";
+            }
+        }
     }
 }
