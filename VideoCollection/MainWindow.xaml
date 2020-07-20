@@ -7,20 +7,14 @@
         xmlns:viewmodel ="clr-namespace:VideoCollection.ViewModel"
         xmlns:view ="clr-namespace:VideoCollection.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="800">
     <Window.Resources>
         <DataTemplate x:Name="contentViewTemplate" DataType="{x:Type viewmodel:ContentViewModel}">
             <view:ContentView DataContext="{Binding}"/>
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <Grid VerticalAlignment="Top" Height="30">
-            <StackPanel Orientation="Horizontal">
-                <Button HorizontalAlignment="Left" Width="50" Click="Button_Click">Add</Button>
-                <Button HorizontalAlignment="Left" Margin="10, 0, 0, 0" Width="50">Edit</Button>
-            </StackPanel>
-        </Grid>
-        <Grid Margin="0, 30, 0, 0">
+        <Grid>
             <ContentControl Grid.Row="1" Grid.RowSpan="7" Content="{Binding}"/>
         </Grid>
     </Grid>

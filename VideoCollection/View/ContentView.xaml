@@ -5,10 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VideoCollection.View"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="500" d:DesignWidth="800"
              >
     <Grid>
-        <Grid HorizontalAlignment="Left" Width="130">
+        <Grid VerticalAlignment="Top" Height="30">
+            <StackPanel Orientation="Horizontal">
+                <Button HorizontalAlignment="Left" Width="50" Click="Button_Click_1">Add</Button>
+                <Button HorizontalAlignment="Left" Margin="10, 0, 0, 0" Width="50">Edit</Button>
+            </StackPanel>
+        </Grid>
+        <Grid HorizontalAlignment="Left" Width="130"  Margin="0, 30, 0, 0">
             <ListView Name="DataListView" SelectionChanged="DataListView_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -17,12 +23,15 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        <ScrollViewer Margin="136,0,0,0">
-            <Grid>
-                <Grid VerticalAlignment="Top">
-                    <MediaElement Source="{Binding SourcePath}" Name="VideoOutput" Height="300" LoadedBehavior="Manual" MediaOpened="VideoOutput_MediaOpened" MouseDown="VideoOutput_MouseDown"></MediaElement>
+        <ScrollViewer Margin="136,0,0,0" Name="ContentScrollView">
+            <Grid VerticalAlignment="Center" Name="ContentGridComtainer">
+                <TextBlock Name="TitleTextBox"  Text="{Binding VideoName}" VerticalAlignment="Center" Margin="0, -470, 0, 0" FontSize="16" TextAlignment="Center"></TextBlock>
+                <TextBlock Name="SizeTextBox"  Text="{Binding Size}" VerticalAlignment="Center" Margin="0, -400, 0, 0" FontSize="16" TextAlignment="Center"></TextBlock>
+
+                <Grid Margin="0,40,0,0">
+                    <MediaElement Source="{Binding SourcePath}" Height="400" Grid.Row="0" Name="VideoOutput" LoadedBehavior="Manual" MediaOpened="VideoOutput_MediaOpened" MouseDown="VideoOutput_MouseDown"></MediaElement>
                 </Grid>
-                <Grid VerticalAlignment="Bottom" Height="70" Margin="0, 0, 0, 0">
+                <Grid VerticalAlignment="Bottom"  Height="70" Margin="0, 0, 0, 0">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -30,22 +31,19 @@ namespace VideoCollection.View
         bool? dialogOk;
         OpenFileDialog fileDialog;
         DispatcherTimer timer;
+
         public ContentView()
         {
             DataContext = this;
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(500);
-            timer.Tick += new EventHandler(timer_tick);
+            timer.Tick += new EventHandler(Timer_tick);
             InitializeComponent();
-            OpenFileSystemAsync();
         }
-        void timer_tick(object sender, EventArgs e)
+
+        void Timer_tick(object sender, EventArgs e)
         {
             TimeBarSlider.Value = VideoOutput.Position.TotalSeconds;
-        }
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -65,10 +63,10 @@ namespace VideoCollection.View
         }
         private async void OpenFileSystemAsync()
         {
-            await Task.Run(() => OpenFileSystem());
+            await Task.Run(() => OpenFileSystem()); //вызов диалогового окна асинхронно
             if(dialogOk == true)
             {
-                FillingList();
+                FillingList(); //заполнение листа объектов
             }
         }
         private void OpenFileSystem()
@@ -81,12 +79,16 @@ namespace VideoCollection.View
         }
         private void FillingList()
         {
+            DataListView.Items.Clear();
+            Model.SizeConverter sizeConverter = new Model.SizeConverter();
             foreach (string sFileName in fileDialog.FileNames)
             {
                 videoDataTempleteList.Add(new VideoDataTemplete()
                 {
                     Directory = sFileName,
-                    VideoName = RemoveSlash(sFileName)
+                    VideoName = RemoveSlash(sFileName),
+                    Size = sizeConverter.FileSizeConvert(new FileInfo(sFileName).Length),
+                    CreationTime = new FileInfo(sFileName).CreationTime
                 });
             }
             for (int i = 0; i < videoDataTempleteList.Count; i++)
@@ -121,14 +123,30 @@ namespace VideoCollection.View
 
         private void DataListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            VideoOutput.DataContext = new VideoDataTemplete()
+            try
             {
-                SourcePath = new Uri(videoDataTempleteList[this.DataListView.SelectedIndex].Directory)
-            };
-            VideoOutput.Volume = (double)VolumeSlider.Value;
-            VideoOutput.Stop();
-            IsPaused = true;
-            VideoControlButton.Content = "Play";
+                VideoOutput.DataContext = new VideoDataTemplete()
+                {
+                    SourcePath = new Uri(videoDataTempleteList[this.DataListView.SelectedIndex].Directory)
+                };
+                TitleTextBox.DataContext = new VideoDataTemplete()
+                {
+                    VideoName = videoDataTempleteList[this.DataListView.SelectedIndex].VideoName
+                };
+                SizeTextBox.DataContext = new VideoDataTemplete()
+                {
+                    Size = videoDataTempleteList[this.DataListView.SelectedIndex].Size
+                };
+                VideoOutput.Volume = (double)VolumeSlider.Value;
+                VideoOutput.Stop();
+                IsPaused = true;
+                VideoControlButton.Content = "Play";
+            }
+            catch
+            {
+
+            }
+
         }
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -163,6 +181,11 @@ namespace VideoCollection.View
                 VideoOutput.Pause();
                 VideoControlButton.Content = "Play";
             }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            OpenFileSystemAsync();
         }
     }
 }

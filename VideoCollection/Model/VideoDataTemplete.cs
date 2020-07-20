@@ -9,5 +9,8 @@ namespace VideoCollection.Model
         public Uri SourcePath { get; set; }
         public string VideoName { get; set; }
         public string Directory { get; set; }
+        public string Size { get; set; }
+        public DateTime CreationTime { get; set; }
+        public string[] Tags { get; set; }
     }
 }
