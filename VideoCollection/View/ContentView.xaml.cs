@@ -1,4 +1,6 @@
-﻿using Microsoft.Win32;
+﻿using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,30 +40,13 @@ namespace VideoCollection.View
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += new EventHandler(Timer_tick);
-            InitializeComponent();
+            InitializeComponent();  
         }
-
         void Timer_tick(object sender, EventArgs e)
         {
             TimeBarSlider.Value = VideoOutput.Position.TotalSeconds;
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (IsPaused)
-            {
-                IsPaused = false;
-                VideoOutput.Play();
-                VideoControlButton.Content = "Pause";
-
-            } else
-            {
-                IsPaused = true;
-                VideoOutput.Pause();
-                VideoControlButton.Content = "Play";
-            }
-        }
-        private async void OpenFileSystemAsync()
+        public async void OpenFileSystemAsync()
         {
             await Task.Run(() => OpenFileSystem()); //вызов диалогового окна асинхронно
             if(dialogOk == true)
@@ -90,6 +75,7 @@ namespace VideoCollection.View
                     Size = sizeConverter.FileSizeConvert(new FileInfo(sFileName).Length),
                     CreationTime = new FileInfo(sFileName).CreationTime
                 });
+
             }
             for (int i = 0; i < videoDataTempleteList.Count; i++)
             {
@@ -125,10 +111,7 @@ namespace VideoCollection.View
         {
             try
             {
-                VideoOutput.DataContext = new VideoDataTemplete()
-                {
-                    SourcePath = new Uri(videoDataTempleteList[this.DataListView.SelectedIndex].Directory)
-                };
+                AddVideoInMediaElement(new Uri(videoDataTempleteList[this.DataListView.SelectedIndex].Directory));
                 TitleTextBox.DataContext = new VideoDataTemplete()
                 {
                     VideoName = videoDataTempleteList[this.DataListView.SelectedIndex].VideoName
@@ -140,7 +123,7 @@ namespace VideoCollection.View
                 VideoOutput.Volume = (double)VolumeSlider.Value;
                 VideoOutput.Stop();
                 IsPaused = true;
-                VideoControlButton.Content = "Play";
+                StateIcon.Kind = PackIconKind.Play;
             }
             catch
             {
@@ -148,10 +131,35 @@ namespace VideoCollection.View
             }
 
         }
-
+        private void AddVideoInMediaElement(Uri value)
+        {
+            VideoOutput.DataContext = new VideoDataTemplete()
+            {
+                SourcePath = value
+            };
+        }
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            VideoOutput.Volume = (double)VolumeSlider.Value;
+            VideoOutput.Volume = (double)(VolumeSlider.Value / 10);
+            if (VideoOutput.Volume <= 1)
+            {
+                VolumeIcon.Kind = PackIconKind.VolumeHigh;
+            }
+            {
+                VolumeIcon.Kind = PackIconKind.VolumeMedium;
+            }
+            if (VideoOutput.Volume <= 0.7)
+            {
+                VolumeIcon.Kind = PackIconKind.VolumeMedium;
+            }
+            if (VideoOutput.Volume <= 0.5)
+            {
+                VolumeIcon.Kind = PackIconKind.VolumeLow;
+            }
+            if (VideoOutput.Volume == 0)
+            {
+                VolumeIcon.Kind = PackIconKind.VolumeMute;
+            }
         }
 
         private void TimeBarSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -172,20 +180,85 @@ namespace VideoCollection.View
             {
                 IsPaused = false;
                 VideoOutput.Play();
-                VideoControlButton.Content = "Pause";
+                StateIcon.Kind = PackIconKind.Pause;
 
             }
             else
             {
                 IsPaused = true;
                 VideoOutput.Pause();
-                VideoControlButton.Content = "Play";
+                StateIcon.Kind = PackIconKind.Play;
             }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             OpenFileSystemAsync();
+        }
+
+        private void VideoOutput_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            if (DataListView.Items.Count > DataListView.SelectedIndex+1)
+            {
+                DataListView.SelectedIndex = DataListView.SelectedIndex + 1;
+                AddVideoInMediaElement(new Uri(videoDataTempleteList[this.DataListView.SelectedIndex].Directory));
+                VideoOutput.Play();
+            } else
+            {
+                VideoOutput.Stop();
+            }
+        }
+        void Window_Closing(object sender, global::System.ComponentModel.CancelEventArgs e)
+        {
+            string jsonData = JsonConvert.SerializeObject(videoDataTempleteList[1]);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileSystemAsync();
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            //write in json
+            string jsonDataString = "";
+            for (int i = 0; i < videoDataTempleteList.Count; i++)
+            {
+                jsonDataString += JsonConvert.SerializeObject(videoDataTempleteList[i]).ToString();
+            }
+            File.WriteAllText("videos.json", jsonDataString);
+
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            //read json
+            var videosList = File.Exists("videos.json");
+            if (videosList)
+            {
+                var jsonData = JsonConvert.DeserializeObject<VideoDataTemplete>(File.ReadAllText("videos.json"));
+                
+                FillingListFromJson(jsonData.Directory, jsonData.VideoName, jsonData.Size, jsonData.CreationTime);
+            } else
+            {
+                string path = System.IO.Path.Combine(Environment.CurrentDirectory, "videos.json");
+                File.Create(path);
+            }
+
+        }
+        private void FillingListFromJson(string directory, string videoName, string size, DateTime creationTime)
+        {
+            videoDataTempleteList.Add(new VideoDataTemplete()
+            {
+                Directory = directory,
+                VideoName = videoName,
+                Size = size,
+                CreationTime = creationTime
+            });
+            for (int i = 0; i < videoDataTempleteList.Count; i++)
+            {
+                DataListView.Items.Add(videoDataTempleteList[i]);
+            }
         }
     }
 }
