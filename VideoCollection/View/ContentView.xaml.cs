@@ -5,27 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using VideoCollection.Model;
 
 namespace VideoCollection.View
 {
-    /// <summary>
-    /// Логика взаимодействия для ContentView.xaml
-    /// </summary>
-
     public partial class ContentView : UserControl
     {
         private bool IsPaused = true;
@@ -77,10 +65,7 @@ namespace VideoCollection.View
                 });
 
             }
-            for (int i = 0; i < videoDataTempleteList.Count; i++)
-            {
-                DataListView.Items.Add(videoDataTempleteList[i]);
-            }
+            FillingListView();
         }
         private string RemoveSlash(string value)
         {
@@ -120,6 +105,10 @@ namespace VideoCollection.View
                 {
                     Size = videoDataTempleteList[this.DataListView.SelectedIndex].Size
                 };
+                DateTextBox.DataContext = new VideoDataTemplete()
+                {
+                    CreationTime = videoDataTempleteList[this.DataListView.SelectedIndex].CreationTime
+                };
                 VideoOutput.Volume = (double)VolumeSlider.Value;
                 VideoOutput.Stop();
                 IsPaused = true;
@@ -141,24 +130,25 @@ namespace VideoCollection.View
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             VideoOutput.Volume = (double)(VolumeSlider.Value / 10);
-            if (VideoOutput.Volume <= 1)
+            if (VideoOutput.Volume >= 0.9)
             {
                 VolumeIcon.Kind = PackIconKind.VolumeHigh;
+                return;
             }
+            if (VideoOutput.Volume >= 0.7 && VideoOutput.Volume <= 0.9)
             {
                 VolumeIcon.Kind = PackIconKind.VolumeMedium;
+                return;
             }
-            if (VideoOutput.Volume <= 0.7)
-            {
-                VolumeIcon.Kind = PackIconKind.VolumeMedium;
-            }
-            if (VideoOutput.Volume <= 0.5)
+            if (VideoOutput.Volume >= 0.5 && VideoOutput.Volume <= 0.7)
             {
                 VolumeIcon.Kind = PackIconKind.VolumeLow;
+                return;
             }
             if (VideoOutput.Volume == 0)
             {
                 VolumeIcon.Kind = PackIconKind.VolumeMute;
+                return;
             }
         }
 
@@ -221,11 +211,18 @@ namespace VideoCollection.View
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             //write in json
-            string jsonDataString = "";
+            string jsonDataString = "[";
             for (int i = 0; i < videoDataTempleteList.Count; i++)
             {
-                jsonDataString += JsonConvert.SerializeObject(videoDataTempleteList[i]).ToString();
+                if(i < videoDataTempleteList.Count - 1)
+                {
+                    jsonDataString += (JsonConvert.SerializeObject(videoDataTempleteList[i]).ToString() + ",");
+                } else
+                {
+                    jsonDataString += JsonConvert.SerializeObject(videoDataTempleteList[i]).ToString();
+                }
             }
+            jsonDataString += "]";
             File.WriteAllText("videos.json", jsonDataString);
 
         }
@@ -236,9 +233,15 @@ namespace VideoCollection.View
             var videosList = File.Exists("videos.json");
             if (videosList)
             {
-                var jsonData = JsonConvert.DeserializeObject<VideoDataTemplete>(File.ReadAllText("videos.json"));
-                
-                FillingListFromJson(jsonData.Directory, jsonData.VideoName, jsonData.Size, jsonData.CreationTime);
+                var jsonData = JsonConvert.DeserializeObject<List<VideoDataTemplete>>(File.ReadAllText("videos.json"));
+                if(jsonData != null)
+                {
+                    for(int i = 0; i < jsonData.Count; i++)
+                    {
+                        FillingVideoDataTempleteListFromJson(jsonData[i].Directory, jsonData[i].VideoName, jsonData[i].Size, jsonData[i].CreationTime);
+                    }
+                    FillingListView();
+                }
             } else
             {
                 string path = System.IO.Path.Combine(Environment.CurrentDirectory, "videos.json");
@@ -246,7 +249,7 @@ namespace VideoCollection.View
             }
 
         }
-        private void FillingListFromJson(string directory, string videoName, string size, DateTime creationTime)
+        private void FillingVideoDataTempleteListFromJson(string directory, string videoName, string size, DateTime creationTime)
         {
             videoDataTempleteList.Add(new VideoDataTemplete()
             {
@@ -255,6 +258,10 @@ namespace VideoCollection.View
                 Size = size,
                 CreationTime = creationTime
             });
+
+        }
+        private void FillingListView()
+        {
             for (int i = 0; i < videoDataTempleteList.Count; i++)
             {
                 DataListView.Items.Add(videoDataTempleteList[i]);
