@@ -5,10 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using VideoCollection.Model;
 
@@ -17,19 +20,29 @@ namespace VideoCollection.View
     public partial class ContentView : UserControl
     {
         private bool IsPaused = true;
-        private List<VideoDataTemplete> videoDataTempleteList = new List<VideoDataTemplete>();
         bool? dialogOk;
         OpenFileDialog fileDialog;
-        DispatcherTimer timer;
-
+        readonly DispatcherTimer timer;
+        private List<VideoDataTemplete> videoDataTempleteList = new List<VideoDataTemplete>();
         public ContentView()
         {
             DataContext = this;
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += new EventHandler(Timer_tick);
-            InitializeComponent();  
+            InitializeComponent();
+
+
         }
+
+        private bool SearchFilter(object item)
+        {
+            if (String.IsNullOrEmpty(SearchTextBox.Text))
+                return true;
+            else
+                return ((item as VideoDataTemplete).VideoName.IndexOf(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
+        }
+
         void Timer_tick(object sender, EventArgs e)
         {
             TimeBarSlider.Value = VideoOutput.Position.TotalSeconds;
@@ -48,6 +61,7 @@ namespace VideoCollection.View
             {
                 Multiselect = true
             };
+            fileDialog.Filter = "Video (.mp4)|*.mp4|Music (.mp3)|*.mp3";
             dialogOk = fileDialog.ShowDialog();
         }
         private void FillingList()
@@ -135,12 +149,12 @@ namespace VideoCollection.View
                 VolumeIcon.Kind = PackIconKind.VolumeHigh;
                 return;
             }
-            if (VideoOutput.Volume >= 0.7 && VideoOutput.Volume <= 0.9)
+            if (VideoOutput.Volume >= 0.5 && VideoOutput.Volume <= 0.9)
             {
                 VolumeIcon.Kind = PackIconKind.VolumeMedium;
                 return;
             }
-            if (VideoOutput.Volume >= 0.5 && VideoOutput.Volume <= 0.7)
+            if (VideoOutput.Volume > 0 && VideoOutput.Volume <= 0.5)
             {
                 VolumeIcon.Kind = PackIconKind.VolumeLow;
                 return;
@@ -210,7 +224,6 @@ namespace VideoCollection.View
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            //write in json
             string jsonDataString = "[";
             for (int i = 0; i < videoDataTempleteList.Count; i++)
             {
@@ -262,10 +275,36 @@ namespace VideoCollection.View
         }
         private void FillingListView()
         {
-            for (int i = 0; i < videoDataTempleteList.Count; i++)
+            DataListView.ItemsSource = videoDataTempleteList; 
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            DataListView.Items.RemoveAt(GetHoverIndex());
+            videoDataTempleteList.RemoveAt(GetHoverIndex());
+        }
+
+        private int GetHoverIndex()
+        {
+            var item = VisualTreeHelper.HitTest(DataListView, Mouse.GetPosition(DataListView)).VisualHit;
+            int index = 0;
+            while (item != null && !(item is ListViewItem))
             {
-                DataListView.Items.Add(videoDataTempleteList[i]);
+                item = VisualTreeHelper.GetParent(item);
             }
+            if (item != null)
+            {
+                index = DataListView.Items.IndexOf(((ListBoxItem)item).DataContext);
+            }
+            return index;
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DataListView.ItemsSource);
+            view.Filter = SearchFilter;
+
+            CollectionViewSource.GetDefaultView(DataListView.ItemsSource).Refresh();
         }
     }
 }
