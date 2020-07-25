@@ -32,9 +32,9 @@ namespace VideoCollection
             DataContext = new ContentViewModel();
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-
+            DataContext = new EditViewModel();
         }
     }
 }

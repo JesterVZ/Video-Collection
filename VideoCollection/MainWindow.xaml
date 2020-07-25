@@ -8,12 +8,14 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:view ="clr-namespace:VideoCollection.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="800"
-        Closing="Window_Closing"
+        Title="Switcher" Height="500" Width="800"
         >
     <Window.Resources>
         <DataTemplate x:Name="contentViewTemplate" DataType="{x:Type viewmodel:ContentViewModel}">
             <view:ContentView DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="editViewTemplate" DataType="{x:Type viewmodel:EditViewModel}">
+            <view:EditView DataContext="{Binding}"/>
         </DataTemplate>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
@@ -77,9 +79,9 @@
                 <Button Style="{DynamicResource OpenPlayerButton}" HorizontalAlignment="Left" Width="50" Click="Button_Click">
                     <materialDesign:PackIcon Foreground="#FF00B251" Kind="Plus" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"></materialDesign:PackIcon>
                 </Button>
-                <Button Style="{DynamicResource OpenPlayerButton}" HorizontalAlignment="Left" Width="50">
+                <!--<Button Style="{DynamicResource OpenPlayerButton}" HorizontalAlignment="Left" Width="50" Click="Button_Click_1">
                     <materialDesign:PackIcon Foreground="#FF00B251" Kind="Pen" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"></materialDesign:PackIcon>
-                </Button>
+                </Button>-->
             </StackPanel>
         </Grid>
         <Grid Margin="0,35,0,0">

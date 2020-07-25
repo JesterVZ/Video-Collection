@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:VideoCollection.View"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="800"
+             d:DesignHeight="850" d:DesignWidth="800"
              Unloaded="UserControl_Unloaded"
              Loaded="UserControl_Loaded"
              >
@@ -240,7 +240,7 @@
     </UserControl.Resources>
     <Grid>
 
-        <Grid HorizontalAlignment="Left" Width="130">
+        <Grid HorizontalAlignment="Left" Width="180">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="20"/>
@@ -248,7 +248,7 @@
             </Grid.RowDefinitions>
             <Button Style="{DynamicResource AddVideoButtonStyle}" Foreground="White" FontWeight="Bold" Click="Button_Click" Margin="0, 5, 0, 5">Add new video</Button>
             <StackPanel Orientation="Horizontal" Grid.Row="1">
-                <TextBox Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged" Width="100"></TextBox>
+                <TextBox Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged" Width="150"></TextBox>
                 <materialDesign:PackIcon Kind="Search" Width="30" Height="20" Foreground="White"/>
             </StackPanel>
             <ListView Style="{DynamicResource BlackListViewStyle}" Name="DataListView" Foreground="White" Grid.Row="2" SelectionChanged="DataListView_SelectionChanged">
@@ -257,46 +257,72 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="20"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Button Width="20" Background="Transparent" BorderBrush="{x:Null}" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click_2">
+                            <Button Grid.Column="0" Width="20" Background="Transparent" BorderBrush="{x:Null}" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click_2">
                                 <materialDesign:PackIcon Name="DeleteItemIcon" Kind="Minus" Foreground="White" />
                             </Button>
-                            <Label Foreground="White" Content="{Binding VideoName}"  Grid.Column="1"></Label>
+                            <Button Grid.Column="1" Width="20" Background="Transparent" BorderBrush="{x:Null}" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click_3">
+                                <materialDesign:PackIcon Name="EditItemIcon" Kind="Pen" Foreground="White" />
+                            </Button>
+                            <Label Foreground="White" Content="{Binding VideoName}"  Grid.Column="2"></Label>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
 
             </ListView>
         </Grid>
-        <ScrollViewer Margin="136,0,0,0" Name="ContentScrollView">
+        <ScrollViewer Margin="190,0,0,0" Name="ContentScrollView">
 
-            <Grid VerticalAlignment="Center" Name="ContentGridComtainer">
-                <Grid Margin="0,-34,0,354">
-                    <TextBlock Name="TitleTextBox" Foreground="White" Text="{Binding VideoName}" Margin="0, -40, 0, 0" VerticalAlignment="Center" FontSize="16" TextAlignment="Center"></TextBlock>
-                    <TextBlock Name="SizeTextBox" Foreground="White" Text="{Binding Size}" VerticalAlignment="Center" FontSize="16" TextAlignment="Center"></TextBlock>
-                    <TextBlock Name="DateTextBox" Foreground="White" Text="{Binding CreationTime}"  Margin="0, 40, 0, 0" VerticalAlignment="Center" FontSize="16" TextAlignment="Center"></TextBlock>
+            <Grid Name="ContentGridComtainer">
+                <Grid MaxWidth="1000" Height="150" VerticalAlignment="Top" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Rectangle Grid.Row="0" Fill="#6F6F6F" />
+                    <Rectangle Grid.Row="2" Fill="#6F6F6F" />
+
+                    <TextBlock Grid.Column="0" Grid.Row="0" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center">Name</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center">Size</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="2" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center">Creation time</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="3" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center">Tags</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="4" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center">Link</TextBlock>
+
+
+                    <TextBlock Grid.Column="1" Grid.Row="0" Name="TitleTextBox" Foreground="White" Text="{Binding VideoName}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Name="SizeTextBox" Foreground="White" Text="{Binding Size}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="2" Name="DateTextBox" Foreground="White" Text="{Binding CreationTime}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="4" Name="LinkTextBox" Foreground="White" Text="{Binding Directory}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center"></TextBlock>
+
                 </Grid>
-                <Grid MaxWidth="500">
-                    <MediaElement Source="{Binding SourcePath}" Height="400" Grid.Row="0" Name="VideoOutput" LoadedBehavior="Manual" MediaOpened="VideoOutput_MediaOpened" MediaEnded="VideoOutput_MediaEnded" MouseDown="VideoOutput_MouseDown"></MediaElement>
-                    <Grid VerticalAlignment="Bottom"  Height="70" Margin="0, 0, 0, 0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Slider Template="{DynamicResource StyleSliderTemplate}" Margin="0,10,0,0" Name="TimeBarSlider" ValueChanged="TimeBarSlider_ValueChanged"></Slider>
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="135*"/>
-                                <ColumnDefinition Width="166*"/>
-                                <ColumnDefinition Width="34*"/>
-                                <ColumnDefinition Width="133*"/>
-                            </Grid.ColumnDefinitions>
-                            <materialDesign:PackIcon Name="StateIcon" Kind="Play" Width="30" Height="30" VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Grid.Column="1"/>
-                            <materialDesign:PackIcon Name="VolumeIcon" VerticalAlignment="Center" Width="30" Foreground="White" Height="30" HorizontalAlignment="Center" Kind="VolumeHigh" Grid.Column="2" />
-                            <Slider Template="{DynamicResource StyleSliderTemplate}" Grid.Column="4" Value="10" Name="VolumeSlider" VerticalAlignment="Center" ValueChanged="VolumeSlider_ValueChanged"></Slider>
+                <Grid MaxWidth="800">
+                    <Grid Margin="0, 100, 0, 0">
+                        <MediaElement Source="{Binding SourcePath}" Height="400" Grid.Row="0" Name="VideoOutput" LoadedBehavior="Manual" MediaOpened="VideoOutput_MediaOpened" MediaEnded="VideoOutput_MediaEnded" MouseDown="VideoOutput_MouseDown"></MediaElement>
+                        <Grid Height="70" Margin="0, 500, 0, 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Slider Template="{DynamicResource StyleSliderTemplate}" Margin="0,10,0,0" Name="TimeBarSlider" ValueChanged="TimeBarSlider_ValueChanged"></Slider>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="135*"/>
+                                    <ColumnDefinition Width="166*"/>
+                                    <ColumnDefinition Width="34*"/>
+                                    <ColumnDefinition Width="133*"/>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Name="StateIcon" Kind="Play" Width="30" Height="30" VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center" Grid.Column="1"/>
+                                <materialDesign:PackIcon Name="VolumeIcon" VerticalAlignment="Center" Width="30" Foreground="White" Height="30" HorizontalAlignment="Center" Kind="VolumeHigh" Grid.Column="2" />
+                                <Slider Template="{DynamicResource StyleSliderTemplate}" Grid.Column="4" Value="10" Name="VolumeSlider" VerticalAlignment="Center" ValueChanged="VolumeSlider_ValueChanged"></Slider>
+                            </Grid>
                         </Grid>
                     </Grid>
+
                 </Grid>
 
             </Grid>
