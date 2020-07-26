@@ -283,22 +283,23 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Rectangle Grid.Row="0" Fill="#6F6F6F" />
                     <Rectangle Grid.Row="2" Fill="#6F6F6F" />
 
-                    <TextBlock Grid.Column="0" Grid.Row="0" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center">Name</TextBlock>
-                    <TextBlock Grid.Column="0" Grid.Row="1" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center">Size</TextBlock>
-                    <TextBlock Grid.Column="0" Grid.Row="2" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center">Creation time</TextBlock>
-                    <TextBlock Grid.Column="0" Grid.Row="3" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center">Tags</TextBlock>
-                    <TextBlock Grid.Column="0" Grid.Row="4" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center">Link</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5, 0, 0, 0">Name</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5, 0, 0, 0">Size</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="2" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5, 0, 0, 0">Creation time</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="3" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5, 0, 0, 0">Tags</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="4" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5, 0, 0, 0">Link</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="5" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5, 0, 0, 0">Comment</TextBlock>
 
-
-                    <TextBlock Grid.Column="1" Grid.Row="0" Name="TitleTextBox" Foreground="White" Text="{Binding VideoName}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center"></TextBlock>
-                    <TextBlock Grid.Column="1" Grid.Row="1" Name="SizeTextBox" Foreground="White" Text="{Binding Size}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center"></TextBlock>
-                    <TextBlock Grid.Column="1" Grid.Row="2" Name="DateTextBox" Foreground="White" Text="{Binding CreationTime}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center"></TextBlock>
-                    <TextBlock Grid.Column="1" Grid.Row="4" Name="LinkTextBox" Foreground="White" Text="{Binding Directory}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center"></TextBlock>
-
+                    <TextBlock Grid.Column="1" Grid.Row="0" Name="TitleTextBox" Foreground="White" Text="{Binding VideoName}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 5, 0"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Name="SizeTextBox" Foreground="White" Text="{Binding Size}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 5, 0"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="2" Name="DateTextBox" Foreground="White" Text="{Binding CreationTime}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 5, 0"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="4" Name="LinkTextBox" Foreground="White" Text="{Binding Directory}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 5, 0"></TextBlock>
+                    <TextBlock Grid.Column="1" Grid.Row="5" Name="CommentTextBox" Foreground="White" Text="{Binding Comment}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 5, 0"></TextBlock>
                 </Grid>
                 <Grid MaxWidth="800">
                     <Grid Margin="0, 100, 0, 0">

@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using VideoCollection.Model;
+using VideoCollection.ViewModel;
 
 namespace VideoCollection.View
 {
@@ -125,6 +126,10 @@ namespace VideoCollection.View
                 {
                     Directory = videoDataTempleteList[this.DataListView.SelectedIndex].Directory
                 };
+                CommentTextBox.DataContext = new VideoDataTemplete()
+                {
+                    Comment = videoDataTempleteList[this.DataListView.SelectedIndex].Comment
+                };
                 VideoOutput.Volume = (double)VolumeSlider.Value;
                 VideoOutput.Stop();
                 IsPaused = true;
@@ -221,51 +226,64 @@ namespace VideoCollection.View
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            string jsonDataString = "[";
-            for (int i = 0; i < videoDataTempleteList.Count; i++)
-            {
-                if(i < videoDataTempleteList.Count - 1)
-                {
-                    jsonDataString += (JsonConvert.SerializeObject(videoDataTempleteList[i]).ToString() + ",");
-                } else
-                {
-                    jsonDataString += JsonConvert.SerializeObject(videoDataTempleteList[i]).ToString();
-                }
-            }
-            jsonDataString += "]"; 
-            File.WriteAllText("videos.json", jsonDataString);
+            FillingJsonFile();
             Application.Current.Shutdown();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            ReadFromJsonOrCreateNewJsonFile();
+        }
+
+        private void FillingJsonFile()
+        {
+            string jsonDataString = "[";
+            for (int i = 0; i < videoDataTempleteList.Count; i++)
+            {
+                if (i < videoDataTempleteList.Count - 1)
+                {
+                    jsonDataString += (JsonConvert.SerializeObject(videoDataTempleteList[i]).ToString() + ",");
+                }
+                else
+                {
+                    jsonDataString += JsonConvert.SerializeObject(videoDataTempleteList[i]).ToString();
+                }
+            }
+            jsonDataString += "]";
+            File.WriteAllText("videos.json", jsonDataString);
+        }
+
+        private void ReadFromJsonOrCreateNewJsonFile()
+        {
             var videosList = File.Exists("videos.json");
             if (videosList)
             {
                 var jsonData = JsonConvert.DeserializeObject<List<VideoDataTemplete>>(File.ReadAllText("videos.json"));
-                if(jsonData != null)
+                if (jsonData != null)
                 {
-                    for(int i = 0; i < jsonData.Count; i++)
+                    for (int i = 0; i < jsonData.Count; i++)
                     {
-                        FillingVideoDataTempleteListFromJson(jsonData[i].Directory, jsonData[i].VideoName, jsonData[i].Size, jsonData[i].CreationTime);
+                        FillingVideoDataTempleteListFromJson(jsonData[i].Directory, jsonData[i].VideoName, jsonData[i].Size, jsonData[i].CreationTime, jsonData[i].Comment);
                     }
                     FillingListView();
                 }
-            } else
+            }
+            else
             {
                 string path = System.IO.Path.Combine(Environment.CurrentDirectory, "videos.json");
                 File.Create(path);
             }
 
         }
-        private void FillingVideoDataTempleteListFromJson(string directory, string videoName, string size, DateTime creationTime)
+        private void FillingVideoDataTempleteListFromJson(string directory, string videoName, string size, DateTime creationTime, string comment)
         {
             videoDataTempleteList.Add(new VideoDataTemplete()
             {
                 Directory = directory,
                 VideoName = videoName,
                 Size = size,
-                CreationTime = creationTime
+                CreationTime = creationTime,
+                Comment = comment
             });
         }
         private void FillingListView()
@@ -299,14 +317,17 @@ namespace VideoCollection.View
         {
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DataListView.ItemsSource);
             view.Filter = SearchFilter;
-
             CollectionViewSource.GetDefaultView(DataListView.ItemsSource).Refresh(); //обновление
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            EditWindow editWindow = new EditWindow(videoDataTempleteList[GetHoverIndex()]);
-            editWindow.Show();
+            EditWindow editWindow = new EditWindow(videoDataTempleteList[GetHoverIndex()], GetHoverIndex());
+            editWindow.ShowDialog();
+            videoDataTempleteList[editWindow.Index].VideoName = editWindow.NameVideo;
+            videoDataTempleteList[editWindow.Index].Comment = editWindow.CommentVideo;
+            FillingJsonFile(); //перезаписать json
+            FillingListView();
         }
     }
 }

@@ -25,12 +25,20 @@
             <TextBlock Grid.Column="0" Grid.Row="3" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center">Tags</TextBlock>
             <TextBlock Grid.Column="0" Grid.Row="4" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center">Comment</TextBlock>
 
-            <TextBox Name="NameTextBox" Grid.Column="1" Grid.Row="0" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"></TextBox>
+            <TextBox TextChanged="NameTextBox_TextChanged" Name="NameTextBox" Grid.Column="1" Grid.Row="0" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"></TextBox>
             <TextBlock Name="SizeTextBox" Grid.Column="1" Grid.Row="1" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"></TextBlock>
             <TextBlock Name="DateTimeTextBox" Grid.Column="1" Grid.Row="2" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"></TextBlock>
-            <TextBox Name="TagsTextBox" Grid.Column="1" Grid.Row="3" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"></TextBox>
+            <!--<TextBox Name="TagsTextBox" Grid.Column="1" Grid.Row="3" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"></TextBox>-->
             <TextBox Name="CommentTextBox" Grid.Column="1" Grid.Row="4" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"></TextBox>
-
+            <Grid Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right" Width="100">
+                <ListView Background="Transparent">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding }"></Button>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
             <Button Grid.Row="5" Width="200" Click="Button_Click">Apply</Button>
         </Grid>
     </Grid>
