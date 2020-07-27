@@ -324,7 +324,10 @@ namespace VideoCollection.View
         {
             EditWindow editWindow = new EditWindow(videoDataTempleteList[GetHoverIndex()], GetHoverIndex());
             editWindow.ShowDialog();
-            videoDataTempleteList[editWindow.Index].VideoName = editWindow.NameVideo;
+            if (editWindow.NameVideo != null)
+            {
+                videoDataTempleteList[editWindow.Index].VideoName = editWindow.NameVideo;
+            }
             videoDataTempleteList[editWindow.Index].Comment = editWindow.CommentVideo;
             FillingJsonFile(); //перезаписать json
             FillingListView();

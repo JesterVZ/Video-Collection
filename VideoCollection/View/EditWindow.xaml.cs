@@ -31,7 +31,7 @@ namespace VideoCollection.View
                 CommentTextBox.Text = videoDataTemplete.Comment;
             } else
             {
-                CommentTextBox.Text = "Комментарий пустой.";
+                CommentTextBox.Text = "";
             }
             Index = hoverIndex;
         }
@@ -43,6 +43,7 @@ namespace VideoCollection.View
             SizeVideo = SizeTextBox.Text;
             DateTimeVideo = DateTimeTextBox.Text;
             CommentVideo = CommentTextBox.Text;
+            this.Close();
         }
 
         private void NameTextBox_TextChanged(object sender, TextChangedEventArgs e)

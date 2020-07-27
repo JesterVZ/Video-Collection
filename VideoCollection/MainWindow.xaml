@@ -9,6 +9,8 @@
         xmlns:view ="clr-namespace:VideoCollection.View"
         mc:Ignorable="d"
         Title="Switcher" Height="500" Width="800"
+        MinWidth="800"
+        MinHeight="500"
         >
     <Window.Resources>
         <DataTemplate x:Name="contentViewTemplate" DataType="{x:Type viewmodel:ContentViewModel}">
@@ -74,18 +76,8 @@
         </Style>
     </Window.Resources>
     <Grid Background="#313131">
-        <Grid VerticalAlignment="Top" Height="30">
-            <StackPanel Orientation="Horizontal">
-                <Button Style="{DynamicResource OpenPlayerButton}" HorizontalAlignment="Left" Width="50" Click="Button_Click">
-                    <materialDesign:PackIcon Foreground="#FF00B251" Kind="Plus" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"></materialDesign:PackIcon>
-                </Button>
-                <!--<Button Style="{DynamicResource OpenPlayerButton}" HorizontalAlignment="Left" Width="50" Click="Button_Click_1">
-                    <materialDesign:PackIcon Foreground="#FF00B251" Kind="Pen" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center"></materialDesign:PackIcon>
-                </Button>-->
-            </StackPanel>
-        </Grid>
-        <Grid Margin="0,35,0,0">
-            <ContentControl Content="{Binding}" Grid.ColumnSpan="2"/>
+        <Grid>
+            <ContentControl Content="{Binding}"/>
         </Grid>
     </Grid>
 
