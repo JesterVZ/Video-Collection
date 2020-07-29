@@ -332,5 +332,18 @@ namespace VideoCollection.View
             FillingJsonFile(); //перезаписать json
             FillingListView();
         }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            AddYoutubeLinkWindow addYoutubeLinkWindow = new AddYoutubeLinkWindow();
+            addYoutubeLinkWindow.ShowDialog();
+
+            videoDataTempleteList.Add(new VideoDataTemplete()
+            {
+                Directory = addYoutubeLinkWindow.GetVideoUri().ToString(),
+                VideoName = addYoutubeLinkWindow.GetName()
+            });
+            FillingListView();
+        }
     }
 }

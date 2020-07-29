@@ -243,15 +243,17 @@
         <Grid HorizontalAlignment="Left" Width="180">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="20"/>
                 <RowDefinition Height="461*"/>
             </Grid.RowDefinitions>
-            <Button Style="{DynamicResource AddVideoButtonStyle}" Foreground="White" FontWeight="Bold" Click="Button_Click" Margin="0, 5, 0, 5">Add new video</Button>
-            <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Button Style="{DynamicResource AddVideoButtonStyle}" Foreground="White" FontWeight="Bold" Click="Button_Click" Margin="0, 5, 0, 5">Add local</Button>
+            <Button Style="{DynamicResource AddVideoButtonStyle}" Grid.Row="1" Foreground="White" FontWeight="Bold" Click="Button_Click_4" Margin="0, 5, 0, 5">Add Youtube</Button>
+            <StackPanel Orientation="Horizontal" Grid.Row="2">
                 <TextBox Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged" Width="150"></TextBox>
                 <materialDesign:PackIcon Kind="Search" Width="30" Height="20" Foreground="White"/>
             </StackPanel>
-            <ListView Style="{DynamicResource BlackListViewStyle}" Name="DataListView" Foreground="White" Grid.Row="2" SelectionChanged="DataListView_SelectionChanged">
+            <ListView Style="{DynamicResource BlackListViewStyle}" Name="DataListView" Foreground="White" Grid.Row="3" SelectionChanged="DataListView_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
