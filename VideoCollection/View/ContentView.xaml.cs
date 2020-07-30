@@ -130,7 +130,6 @@ namespace VideoCollection.View
                 {
                     Comment = videoDataTempleteList[this.DataListView.SelectedIndex].Comment
                 };
-                VideoOutput.Volume = (double)VolumeSlider.Value;
                 VideoOutput.Stop();
                 IsPaused = true;
                 StateIcon.Kind = PackIconKind.Play;
@@ -143,6 +142,7 @@ namespace VideoCollection.View
         }
         private void AddVideoInMediaElement(Uri value)
         {
+            VolumeCheck();
             VideoOutput.DataContext = new VideoDataTemplete()
             {
                 SourcePath = value
@@ -200,10 +200,9 @@ namespace VideoCollection.View
                 StateIcon.Kind = PackIconKind.Play;
             }
         }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void VolumeCheck()
         {
-            OpenFileSystemAsync();
+            VideoOutput.Volume = (double)(VolumeSlider.Value / 10);
         }
 
         private void VideoOutput_MediaEnded(object sender, RoutedEventArgs e)
@@ -212,8 +211,11 @@ namespace VideoCollection.View
             {
                 DataListView.SelectedIndex += 1;
                 AddVideoInMediaElement(new Uri(videoDataTempleteList[this.DataListView.SelectedIndex].Directory));
+                IsPaused = false;
                 VideoOutput.Play();
-            } else
+                StateIcon.Kind = PackIconKind.Pause;
+            }
+            else
             {
                 VideoOutput.Stop();
             }
@@ -346,6 +348,12 @@ namespace VideoCollection.View
                 });
                 FillingListView();
             }
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            DownloadYoutubeVideoWindow download = new DownloadYoutubeVideoWindow();
+            download.ShowDialog();
         }
     }
 }
