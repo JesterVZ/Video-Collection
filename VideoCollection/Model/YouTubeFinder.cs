@@ -21,7 +21,8 @@ namespace VideoCollection.Model
             }
             catch(Exception e)
             {
-                MessageBox.Show(e.ToString());
+                MessageBox.Show("Не удалось получить информацию о видео. Подробнее об ошибке: \n" + e.ToString());
+                return;
             }
 
         }

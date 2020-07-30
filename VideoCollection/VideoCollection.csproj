@@ -12,4 +12,8 @@
     <PackageReference Include="VideoLibrary" Version="3.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Converter\Converter.csproj" />
+  </ItemGroup>
+
 </Project>

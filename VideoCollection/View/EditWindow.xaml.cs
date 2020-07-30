@@ -20,6 +20,12 @@ namespace VideoCollection.View
     {
         public string NameVideo, SizeVideo, DateTimeVideo, CommentVideo;
         public int Index;
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            TagsListView.Items.Add(TagTextBox.Text);
+        }
+
         public EditWindow(VideoDataTemplete videoDataTemplete, int hoverIndex)
         {
             InitializeComponent();
@@ -34,11 +40,11 @@ namespace VideoCollection.View
                 CommentTextBox.Text = "";
             }
             Index = hoverIndex;
+            TagsListView.ItemsSource = videoDataTemplete.Tags;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //VideoDataTempleteFinal.VideoName = NameTextBox.Text;
             NameVideo = NameTextBox.Text;
             SizeVideo = SizeTextBox.Text;
             DateTimeVideo = DateTimeTextBox.Text;

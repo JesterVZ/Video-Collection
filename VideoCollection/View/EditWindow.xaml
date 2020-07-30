@@ -7,12 +7,12 @@
         mc:Ignorable="d"
         Title="EditWindow" Height="450" Width="800">
     <Grid Background="#313131">
-        <Grid MaxWidth="600" Height="200" VerticalAlignment="Top" >
+        <Grid MaxWidth="600" Height="250" VerticalAlignment="Top" >
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="120"/>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -31,7 +31,12 @@
             <!--<TextBox Name="TagsTextBox" Grid.Column="1" Grid.Row="3" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"></TextBox>-->
             <TextBox Name="CommentTextBox" Grid.Column="1" Grid.Row="4" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"></TextBox>
             <Grid Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right" Width="150">
-                <TextBox Width="150" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center"></TextBox>
+                <ListView Name="TagsListView" Background="Transparent" VerticalAlignment="Top" Height="96">
+                </ListView>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <TextBox Name="TagTextBox" Height="24" Width="100" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center"></TextBox>
+                    <Button Height="24" Click="Button_Click_1">Add</Button>
+                </StackPanel>
             </Grid>
             <Button Grid.Row="5" Width="200" Click="Button_Click">Apply</Button>
         </Grid>

@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using VideoCollection.Model;
 using VideoCollection.ViewModel;
-
+using Converter;
 namespace VideoCollection.View
 {
     public partial class ContentView : UserControl
@@ -66,14 +66,14 @@ namespace VideoCollection.View
         }
         private void FillingList()
         {
-            Model.SizeConverter sizeConverter = new Model.SizeConverter();
+            FileSizeConverter fileSizeConverter = new FileSizeConverter();
             foreach (string sFileName in fileDialog.FileNames)
             {
                 videoDataTempleteList.Add(new VideoDataTemplete()
                 {
                     Directory = sFileName,
                     VideoName = RemoveSlash(sFileName),
-                    Size = sizeConverter.FileSizeConvert(new FileInfo(sFileName).Length),
+                    Size = fileSizeConverter.FileSizeConvert(new FileInfo(sFileName).Length),
                     CreationTime = new FileInfo(sFileName).CreationTime
                 });
 
@@ -337,13 +337,15 @@ namespace VideoCollection.View
         {
             AddYoutubeLinkWindow addYoutubeLinkWindow = new AddYoutubeLinkWindow();
             addYoutubeLinkWindow.ShowDialog();
-
-            videoDataTempleteList.Add(new VideoDataTemplete()
+            if(addYoutubeLinkWindow.GetVideoUri() != null)
             {
-                Directory = addYoutubeLinkWindow.GetVideoUri().ToString(),
-                VideoName = addYoutubeLinkWindow.GetName()
-            });
-            FillingListView();
+                videoDataTempleteList.Add(new VideoDataTemplete()
+                {
+                    Directory = addYoutubeLinkWindow.GetVideoUri().ToString(),
+                    VideoName = addYoutubeLinkWindow.GetName()
+                });
+                FillingListView();
+            }
         }
     }
 }

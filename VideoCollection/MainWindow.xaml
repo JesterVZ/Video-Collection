@@ -16,9 +16,6 @@
         <DataTemplate x:Name="contentViewTemplate" DataType="{x:Type viewmodel:ContentViewModel}">
             <view:ContentView DataContext="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Name="editViewTemplate" DataType="{x:Type viewmodel:EditViewModel}">
-            <view:EditView DataContext="{Binding}"/>
-        </DataTemplate>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
