@@ -13,7 +13,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using VideoCollection.Model;
-using VideoCollection.ViewModel;
 using Converter;
 namespace VideoCollection.View
 {
@@ -130,6 +129,7 @@ namespace VideoCollection.View
                 {
                     Comment = videoDataTempleteList[this.DataListView.SelectedIndex].Comment
                 };
+
                 VideoOutput.Stop();
                 IsPaused = true;
                 StateIcon.Kind = PackIconKind.Play;
@@ -172,7 +172,6 @@ namespace VideoCollection.View
                 return;
             }
         }
-
         private void TimeBarSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             VideoOutput.Position = TimeSpan.FromSeconds(TimeBarSlider.Value);
@@ -265,7 +264,7 @@ namespace VideoCollection.View
                 {
                     for (int i = 0; i < jsonData.Count; i++)
                     {
-                        FillingVideoDataTempleteListFromJson(jsonData[i].Directory, jsonData[i].VideoName, jsonData[i].Size, jsonData[i].CreationTime, jsonData[i].Comment);
+                        FillingVideoDataTempleteListFromJson(jsonData[i].Directory, jsonData[i].VideoName, jsonData[i].Size, jsonData[i].CreationTime, jsonData[i].Tags, jsonData[i].Comment);
                     }
                     FillingListView();
                 }
@@ -277,7 +276,7 @@ namespace VideoCollection.View
             }
 
         }
-        private void FillingVideoDataTempleteListFromJson(string directory, string videoName, string size, DateTime creationTime, string comment)
+        private void FillingVideoDataTempleteListFromJson(string directory, string videoName, string size, DateTime creationTime, List<TagTemplate> tagTemplates, string comment) //заполнение listview из json
         {
             videoDataTempleteList.Add(new VideoDataTemplete()
             {
@@ -329,6 +328,14 @@ namespace VideoCollection.View
             if (editWindow.NameVideo != null)
             {
                 videoDataTempleteList[editWindow.Index].VideoName = editWindow.NameVideo;
+            }
+            if(editWindow.TagList.Count > 0)
+            {
+                videoDataTempleteList[editWindow.Index].Tags = new List<TagTemplate>();
+                for (int i = 0; i < editWindow.TagList.Count; i++)
+                {
+                    videoDataTempleteList[editWindow.Index].Tags.Add(editWindow.TagList[i]);
+                }
             }
             videoDataTempleteList[editWindow.Index].Comment = editWindow.CommentVideo;
             FillingJsonFile(); //перезаписать json

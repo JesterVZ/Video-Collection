@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using VideoCollection.Model;
+using VideoLibrary;
 
 namespace VideoCollection.View
 {
@@ -20,10 +21,29 @@ namespace VideoCollection.View
     {
         public string NameVideo, SizeVideo, DateTimeVideo, CommentVideo;
         public int Index;
-
+        public List<TagTemplate> TagList = new List<TagTemplate>();
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            TagsListView.Items.Add(TagTextBox.Text);
+            AddTag(TagTextBox.Text);
+        }
+
+        private void TagTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                AddTag(TagTextBox.Text);
+            }
+        }
+
+        private void AddTag(string value)
+        {
+            TagList.Add(new TagTemplate()
+            {
+                TagValue = value
+            }); ;
+            TagsListView.ItemsSource = TagList;
+            TagTextBox.Text = "";
+            CollectionViewSource.GetDefaultView(TagsListView.ItemsSource).Refresh();
         }
 
         public EditWindow(VideoDataTemplete videoDataTemplete, int hoverIndex)
@@ -39,8 +59,16 @@ namespace VideoCollection.View
             {
                 CommentTextBox.Text = "";
             }
+            if(videoDataTemplete.Tags != null)
+            {
+                foreach (TagTemplate tag in videoDataTemplete.Tags)
+                {
+                    AddTag(tag.TagValue);
+                }
+            }
+
             Index = hoverIndex;
-            TagsListView.ItemsSource = videoDataTemplete.Tags;
+            TagsListView.ItemsSource = TagList;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -50,11 +78,6 @@ namespace VideoCollection.View
             DateTimeVideo = DateTimeTextBox.Text;
             CommentVideo = CommentTextBox.Text;
             this.Close();
-        }
-
-        private void NameTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
     }
 }

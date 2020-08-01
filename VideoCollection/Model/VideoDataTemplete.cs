@@ -11,7 +11,7 @@ namespace VideoCollection.Model
         public string Directory { get; set; }
         public string Size { get; set; }
         public DateTime CreationTime { get; set; }
-        public string[] Tags { get; set; }
+        public List<TagTemplate> Tags { get; set; }
         public string Comment { get; set; }
     }
 }

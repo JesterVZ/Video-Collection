@@ -4,8 +4,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VideoCollection.View"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="EditWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style x:Key="FileItemStyle" TargetType="{x:Type ListViewItem}">
+            <Setter Property="Margin" Value="5,5,5,5"/>
+            <Setter Property="Padding" Value="0,0,0,0"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate  TargetType="{x:Type ListViewItem}">
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" >
+                            <Border x:Name="border" BorderBrush="{x:Null}" BorderThickness="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="2.5"/>
+                            <StackPanel HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
+                                <ContentPresenter/>
+                            </StackPanel>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid Background="#313131">
         <Grid MaxWidth="600" Height="250" VerticalAlignment="Top" >
             <Grid.RowDefinitions>
@@ -25,17 +45,38 @@
             <TextBlock Grid.Column="0" Grid.Row="3" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center">Tags</TextBlock>
             <TextBlock Grid.Column="0" Grid.Row="4" Foreground="White" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center">Comment</TextBlock>
 
-            <TextBox TextChanged="NameTextBox_TextChanged" Name="NameTextBox" Grid.Column="1" Grid.Row="0" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"></TextBox>
+            <TextBox Name="NameTextBox" Grid.Column="1" Grid.Row="0" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"></TextBox>
             <TextBlock Name="SizeTextBox" Grid.Column="1" Grid.Row="1" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"></TextBlock>
             <TextBlock Name="DateTimeTextBox" Grid.Column="1" Grid.Row="2" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"></TextBlock>
             <!--<TextBox Name="TagsTextBox" Grid.Column="1" Grid.Row="3" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"></TextBox>-->
             <TextBox Name="CommentTextBox" Grid.Column="1" Grid.Row="4" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Width="150"></TextBox>
-            <Grid Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right" Width="150">
-                <ListView Name="TagsListView" Background="Transparent" VerticalAlignment="Top" Height="96">
+            <Grid Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right" Width="250">
+                <ListView Name="TagsListView" Background="Transparent" VerticalAlignment="Top" Height="96" Foreground="White" Width="250" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemContainerStyle="{StaticResource FileItemStyle}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2" CornerRadius="12" BorderBrush="Black" Background="#FF00B251">
+
+                                </Border>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Grid.Column="0" Width="20" Background="Transparent" BorderBrush="{x:Null}" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <materialDesign:PackIcon Name="DeleteItemIcon" Kind="Close" Foreground="White" />
+                                    </Button>
+                                    <Label Foreground="White" Content="{Binding TagValue}"/>
+                                </StackPanel>
+                            </Grid>
+                            
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
-                    <TextBox Name="TagTextBox" Height="24" Width="100" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center"></TextBox>
-                    <Button Height="24" Click="Button_Click_1">Add</Button>
+                    <TextBox Name="TagTextBox" Height="24" Width="100" Foreground="White" Background="Transparent" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" KeyDown="TagTextBox_KeyDown"></TextBox>
+                    <Button Height="24" Click="Button_Click_1" Width="50">Add</Button>
                 </StackPanel>
             </Grid>
             <Button Grid.Row="5" Width="200" Click="Button_Click">Apply</Button>

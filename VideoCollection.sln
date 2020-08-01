@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoCollection", "VideoCollection\VideoCollection.csproj", "{13DDC4B7-A573-41E3-99B4-1F6C326CC109}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Converter", "Converter\Converter.csproj", "{769B2D3B-C74C-4B3B-BF38-3C1CC84B68B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Converter", "Converter\Converter.csproj", "{769B2D3B-C74C-4B3B-BF38-3C1CC84B68B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
