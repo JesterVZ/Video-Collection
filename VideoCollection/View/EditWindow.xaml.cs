@@ -22,6 +22,7 @@ namespace VideoCollection.View
         public string NameVideo, SizeVideo, DateTimeVideo, CommentVideo;
         public int Index;
         public List<TagTemplate> TagList = new List<TagTemplate>();
+        private IListViewIndex listViewIndex = new ListViewIndex();
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             AddTag(TagTextBox.Text);
@@ -33,6 +34,12 @@ namespace VideoCollection.View
             {
                 AddTag(TagTextBox.Text);
             }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            TagList.RemoveAt(listViewIndex.GetHoverIndex(TagsListView));
+            CollectionViewSource.GetDefaultView(TagsListView.ItemsSource).Refresh();
         }
 
         private void AddTag(string value)

@@ -8,7 +8,7 @@
         Title="AddYoutubeLinkWindow" Height="200" Width="400">
     <Grid Background="#313131">
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="36.808"/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>

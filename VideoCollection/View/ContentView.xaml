@@ -280,12 +280,12 @@
         <ScrollViewer Margin="190,0,0,0" Name="ContentScrollView">
 
             <Grid Name="ContentGridComtainer">
-                <Grid MaxWidth="1000" Height="150" VerticalAlignment="Top" >
+                <Grid MaxWidth="1000" Height="250" VerticalAlignment="Top" >
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="100"/>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
@@ -302,11 +302,34 @@
                     <TextBlock Grid.Column="1" Grid.Row="0" Name="TitleTextBox" Foreground="White" Text="{Binding VideoName}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 5, 0"></TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="1" Name="SizeTextBox" Foreground="White" Text="{Binding Size}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 5, 0"></TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="2" Name="DateTextBox" Foreground="White" Text="{Binding CreationTime}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 5, 0"></TextBlock>
+                    <ListView Name="TagListView" Grid.Row="3" Background="Transparent" Width="250" HorizontalAlignment="Right" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2" CornerRadius="12" BorderBrush="Black" Background="#FF00B251">
+
+                                    </Border>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Grid.Column="0" Width="20" Background="Transparent" BorderBrush="{x:Null}" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <materialDesign:PackIcon Name="DeleteItemIcon" Kind="Close" Foreground="White" />
+                                        </Button>
+                                        <Label Foreground="White" Content="{Binding TagValue}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                     <TextBlock Grid.Column="1" Grid.Row="4" Name="LinkTextBox" Foreground="White" Text="{Binding Directory}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 5, 0"></TextBlock>
                     <TextBlock Grid.Column="1" Grid.Row="5" Name="CommentTextBox" Foreground="White" Text="{Binding Comment}" FontSize="16" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 5, 0"></TextBlock>
                 </Grid>
                 <Grid MaxWidth="800">
-                    <Grid Margin="0, 100, 0, 0">
+                    <Grid Margin="0, 250, 0, 0">
                         <MediaElement Source="{Binding SourcePath}" Height="400" Grid.Row="0" Name="VideoOutput" LoadedBehavior="Manual" MediaOpened="VideoOutput_MediaOpened" MediaEnded="VideoOutput_MediaEnded" MouseDown="VideoOutput_MouseDown"></MediaElement>
                         <Grid Height="70" Margin="0, 500, 0, 0">
                             <Grid.RowDefinitions>

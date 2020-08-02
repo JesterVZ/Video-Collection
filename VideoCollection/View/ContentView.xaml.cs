@@ -23,6 +23,7 @@ namespace VideoCollection.View
         OpenFileDialog fileDialog;
         readonly DispatcherTimer timer;
         private List<VideoDataTemplete> videoDataTempleteList = new List<VideoDataTemplete>();
+        private readonly IListViewIndex IListViewIndex = new ListViewIndex();
         public ContentView()
         {
             DataContext = this;
@@ -129,7 +130,7 @@ namespace VideoCollection.View
                 {
                     Comment = videoDataTempleteList[this.DataListView.SelectedIndex].Comment
                 };
-
+                TagListView.ItemsSource = videoDataTempleteList[this.DataListView.SelectedIndex].Tags;
                 VideoOutput.Stop();
                 IsPaused = true;
                 StateIcon.Kind = PackIconKind.Play;
@@ -264,6 +265,11 @@ namespace VideoCollection.View
                 {
                     for (int i = 0; i < jsonData.Count; i++)
                     {
+                        if(jsonData[i].Tags == null)
+                        {
+                            jsonData[i].Tags = new List<TagTemplate>();
+
+                        }
                         FillingVideoDataTempleteListFromJson(jsonData[i].Directory, jsonData[i].VideoName, jsonData[i].Size, jsonData[i].CreationTime, jsonData[i].Tags, jsonData[i].Comment);
                     }
                     FillingListView();
@@ -283,6 +289,7 @@ namespace VideoCollection.View
                 Directory = directory,
                 VideoName = videoName,
                 Size = size,
+                Tags = tagTemplates,
                 CreationTime = creationTime,
                 Comment = comment
             });
@@ -295,11 +302,11 @@ namespace VideoCollection.View
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            videoDataTempleteList.RemoveAt(GetHoverIndex());
+            videoDataTempleteList.RemoveAt(IListViewIndex.GetHoverIndex(DataListView));
             CollectionViewSource.GetDefaultView(DataListView.ItemsSource).Refresh();
         }
 
-        private int GetHoverIndex() //данный метод возвращает индекс элемента listview, на который наведена мышь
+        /*private int GetHoverIndex() //данный метод возвращает индекс элемента listview, на который наведена мышь
         {
             var item = VisualTreeHelper.HitTest(DataListView, Mouse.GetPosition(DataListView)).VisualHit;
             int index = 0;
@@ -312,7 +319,7 @@ namespace VideoCollection.View
                 index = DataListView.Items.IndexOf(((ListBoxItem)item).DataContext);
             }
             return index;
-        }
+        }*/
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -323,7 +330,7 @@ namespace VideoCollection.View
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            EditWindow editWindow = new EditWindow(videoDataTempleteList[GetHoverIndex()], GetHoverIndex());
+            EditWindow editWindow = new EditWindow(videoDataTempleteList[IListViewIndex.GetHoverIndex(DataListView)], IListViewIndex.GetHoverIndex(DataListView));
             editWindow.ShowDialog();
             if (editWindow.NameVideo != null)
             {
