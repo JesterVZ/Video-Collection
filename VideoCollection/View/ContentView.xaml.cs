@@ -107,6 +107,10 @@ namespace VideoCollection.View
 
         private void DataListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            UpdateInfo();
+        }
+        private void UpdateInfo()
+        {
             try
             {
                 AddVideoInMediaElement(new Uri(videoDataTempleteList[this.DataListView.SelectedIndex].Directory));
@@ -139,7 +143,6 @@ namespace VideoCollection.View
             {
 
             }
-
         }
         private void AddVideoInMediaElement(Uri value)
         {
@@ -306,21 +309,6 @@ namespace VideoCollection.View
             CollectionViewSource.GetDefaultView(DataListView.ItemsSource).Refresh();
         }
 
-        /*private int GetHoverIndex() //данный метод возвращает индекс элемента listview, на который наведена мышь
-        {
-            var item = VisualTreeHelper.HitTest(DataListView, Mouse.GetPosition(DataListView)).VisualHit;
-            int index = 0;
-            while (item != null && !(item is ListViewItem))
-            {
-                item = VisualTreeHelper.GetParent(item);
-            }
-            if (item != null)
-            {
-                index = DataListView.Items.IndexOf(((ListBoxItem)item).DataContext);
-            }
-            return index;
-        }*/
-
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DataListView.ItemsSource);
@@ -347,6 +335,7 @@ namespace VideoCollection.View
             videoDataTempleteList[editWindow.Index].Comment = editWindow.CommentVideo;
             FillingJsonFile(); //перезаписать json
             FillingListView();
+            UpdateInfo();
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)

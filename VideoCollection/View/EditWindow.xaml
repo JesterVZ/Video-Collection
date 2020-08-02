@@ -38,12 +38,17 @@
         <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
         <SolidColorBrush x:Key="Button.MouseOver.Background" Color="Transparent"/>
         <SolidColorBrush x:Key="Button.MouseOver.Border" Color="Transparent"/>
-        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
-        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
-        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
-        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
-        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="Transparent"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border" Color="Transparent"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background" Color="Transparent"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border" Color="Transparent"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="Transparent"/>
         <Style x:Key="CloseButtonStyle" TargetType="{x:Type Button}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Cursor" Value="Hand"/>
+                </Trigger>
+            </Style.Triggers>
             <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
             <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
             <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
@@ -115,11 +120,11 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2" CornerRadius="12" BorderBrush="Black" Background="#FF00B251">
+                                <Border BorderThickness="0" Grid.Row="0" Grid.ColumnSpan="2" CornerRadius="12" BorderBrush="Black" Background="#FF00B251">
 
                                 </Border>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Style="{DynamicResource CloseButtonStyle}" Grid.Column="0" Width="20" Background="Transparent" BorderBrush="{x:Null}" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click_2">
+                                    <Button Name="CloseButton" Style="{DynamicResource CloseButtonStyle}" Grid.Column="0" Width="20" Background="Transparent" BorderBrush="{x:Null}" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click_2">
                                         <materialDesign:PackIcon Name="DeleteItemIcon" Kind="Close" Foreground="White" />
                                     </Button>
                                     <Label Foreground="White" Content="{Binding TagValue}"/>
