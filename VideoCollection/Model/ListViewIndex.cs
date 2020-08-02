@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -9,6 +10,12 @@ namespace VideoCollection.Model
 {
     class ListViewIndex : IListViewIndex
     {
+        public void FillingListView(ListView listView, List<VideoDataTemplete> videoDataTempletesList)
+        {
+            listView.ItemsSource = videoDataTempletesList;
+            CollectionViewSource.GetDefaultView(listView.ItemsSource).Refresh();
+        }
+
         public int GetHoverIndex(ListView listView)
         {
             var item = VisualTreeHelper.HitTest(listView, Mouse.GetPosition(listView)).VisualHit;

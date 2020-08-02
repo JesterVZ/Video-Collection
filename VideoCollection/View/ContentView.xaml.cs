@@ -24,6 +24,7 @@ namespace VideoCollection.View
         readonly DispatcherTimer timer;
         private List<VideoDataTemplete> videoDataTempleteList = new List<VideoDataTemplete>();
         private readonly IListViewIndex IListViewIndex = new ListViewIndex();
+        private readonly IJsonFunctions JsonFunctions = new JsonFunctions();
         public ContentView()
         {
             DataContext = this;
@@ -78,7 +79,7 @@ namespace VideoCollection.View
                 });
 
             }
-            FillingListView();
+            IListViewIndex.FillingListView(DataListView, videoDataTempleteList);
         }
         private string RemoveSlash(string value)
         {
@@ -231,76 +232,13 @@ namespace VideoCollection.View
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            FillingJsonFile();
+            JsonFunctions.FillingJsonFile(videoDataTempleteList);
             Application.Current.Shutdown();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            ReadFromJsonOrCreateNewJsonFile();
-        }
-
-        private void FillingJsonFile()
-        {
-            string jsonDataString = "[";
-            for (int i = 0; i < videoDataTempleteList.Count; i++)
-            {
-                if (i < videoDataTempleteList.Count - 1)
-                {
-                    jsonDataString += (JsonConvert.SerializeObject(videoDataTempleteList[i]).ToString() + ",");
-                }
-                else
-                {
-                    jsonDataString += JsonConvert.SerializeObject(videoDataTempleteList[i]).ToString();
-                }
-            }
-            jsonDataString += "]";
-            File.WriteAllText("videos.json", jsonDataString);
-        }
-
-        private void ReadFromJsonOrCreateNewJsonFile()
-        {
-            var videosList = File.Exists("videos.json");
-            if (videosList)
-            {
-                var jsonData = JsonConvert.DeserializeObject<List<VideoDataTemplete>>(File.ReadAllText("videos.json"));
-                if (jsonData != null)
-                {
-                    for (int i = 0; i < jsonData.Count; i++)
-                    {
-                        if(jsonData[i].Tags == null)
-                        {
-                            jsonData[i].Tags = new List<TagTemplate>();
-
-                        }
-                        FillingVideoDataTempleteListFromJson(jsonData[i].Directory, jsonData[i].VideoName, jsonData[i].Size, jsonData[i].CreationTime, jsonData[i].Tags, jsonData[i].Comment);
-                    }
-                    FillingListView();
-                }
-            }
-            else
-            {
-                string path = System.IO.Path.Combine(Environment.CurrentDirectory, "videos.json");
-                File.Create(path);
-            }
-
-        }
-        private void FillingVideoDataTempleteListFromJson(string directory, string videoName, string size, DateTime creationTime, List<TagTemplate> tagTemplates, string comment) //заполнение listview из json
-        {
-            videoDataTempleteList.Add(new VideoDataTemplete()
-            {
-                Directory = directory,
-                VideoName = videoName,
-                Size = size,
-                Tags = tagTemplates,
-                CreationTime = creationTime,
-                Comment = comment
-            });
-        }
-        private void FillingListView()
-        {
-            DataListView.ItemsSource = videoDataTempleteList;
-            CollectionViewSource.GetDefaultView(DataListView.ItemsSource).Refresh();
+            JsonFunctions.ReadFromJsonOrCreateNewJsonFile(DataListView, videoDataTempleteList);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -333,8 +271,8 @@ namespace VideoCollection.View
                 }
             }
             videoDataTempleteList[editWindow.Index].Comment = editWindow.CommentVideo;
-            FillingJsonFile(); //перезаписать json
-            FillingListView();
+            JsonFunctions.FillingJsonFile(videoDataTempleteList); //перезаписать json
+            IListViewIndex.FillingListView(DataListView, videoDataTempleteList);
             UpdateInfo();
         }
 
@@ -349,7 +287,7 @@ namespace VideoCollection.View
                     Directory = addYoutubeLinkWindow.GetVideoUri().ToString(),
                     VideoName = addYoutubeLinkWindow.GetName()
                 });
-                FillingListView();
+                IListViewIndex.FillingListView(DataListView, videoDataTempleteList);
             }
         }
 

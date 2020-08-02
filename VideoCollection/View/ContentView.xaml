@@ -311,13 +311,8 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <Border BorderThickness="0" Grid.Row="0" Grid.ColumnSpan="2" CornerRadius="12" BorderBrush="Black" Background="#FF00B251">
-
-                                    </Border>
+                                    <Border BorderThickness="0" Grid.Row="0" Grid.ColumnSpan="2" CornerRadius="12" BorderBrush="Black" Background="#FF00B251"></Border>
                                     <StackPanel Orientation="Horizontal">
-                                        <Button Grid.Column="0" Width="20" Background="Transparent" BorderBrush="{x:Null}" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <materialDesign:PackIcon Name="DeleteItemIcon" Kind="Close" Foreground="White" />
-                                        </Button>
                                         <Label Foreground="White" Content="{Binding TagValue}"/>
                                     </StackPanel>
                                 </Grid>

@@ -7,6 +7,7 @@ namespace VideoCollection.Model
 {
     interface IListViewIndex
     {
-        public int GetHoverIndex(ListView listView);
+        int GetHoverIndex(ListView listView);
+        void FillingListView(ListView listView, List<VideoDataTemplete> videoDataTempletesList);
     }
 }
