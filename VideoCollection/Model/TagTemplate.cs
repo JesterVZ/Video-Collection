@@ -7,7 +7,7 @@ namespace VideoCollection.Model
 {
     public class TagTemplate
     {
-        public Rectangle Rectangle { get; set; }
+        public string Color { get; set; }
         public string TagValue { get; set; }
     }
 }

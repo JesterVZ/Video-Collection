@@ -22,17 +22,18 @@ namespace VideoCollection.View
         public string NameVideo, SizeVideo, DateTimeVideo, CommentVideo;
         public int Index;
         public List<TagTemplate> TagList = new List<TagTemplate>();
+        private readonly ColorGenerator ColorGenerator = new ColorGenerator();
         private IListViewIndex listViewIndex = new ListViewIndex();
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            AddTag(TagTextBox.Text);
+            AddTag(TagTextBox.Text, ColorGenerator.GenerateColor());
         }
 
         private void TagTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Enter)
             {
-                AddTag(TagTextBox.Text);
+                AddTag(TagTextBox.Text, ColorGenerator.GenerateColor());
             }
         }
 
@@ -42,12 +43,13 @@ namespace VideoCollection.View
             CollectionViewSource.GetDefaultView(TagsListView.ItemsSource).Refresh();
         }
 
-        private void AddTag(string value)
+        private void AddTag(string value, string color)
         {
             TagList.Add(new TagTemplate()
             {
-                TagValue = value
-            }); ;
+                TagValue = value,
+                Color = color
+            });
             TagsListView.ItemsSource = TagList;
             TagTextBox.Text = "";
             CollectionViewSource.GetDefaultView(TagsListView.ItemsSource).Refresh();
@@ -68,9 +70,15 @@ namespace VideoCollection.View
             }
             if(videoDataTemplete.Tags != null)
             {
-                foreach (TagTemplate tag in videoDataTemplete.Tags)
+                for(int i = 0; i < videoDataTemplete.Tags.Count; i++)
                 {
-                    AddTag(tag.TagValue);
+                    if (videoDataTemplete.Tags[i].Color != null)
+                    {
+                        AddTag(videoDataTemplete.Tags[i].TagValue, videoDataTemplete.Tags[i].Color);
+                    } else
+                    {
+                        AddTag(videoDataTemplete.Tags[i].TagValue, ColorGenerator.GenerateColor());
+                    }
                 }
             }
 

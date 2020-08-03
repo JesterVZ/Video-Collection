@@ -1,6 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +9,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Threading;
 using VideoCollection.Model;
 using Converter;
@@ -262,12 +260,16 @@ namespace VideoCollection.View
             {
                 videoDataTempleteList[editWindow.Index].VideoName = editWindow.NameVideo;
             }
-            if(editWindow.TagList.Count > 0)
+            if(editWindow.TagList.Count >= 0)
             {
                 videoDataTempleteList[editWindow.Index].Tags = new List<TagTemplate>();
                 for (int i = 0; i < editWindow.TagList.Count; i++)
                 {
-                    videoDataTempleteList[editWindow.Index].Tags.Add(editWindow.TagList[i]);
+                    videoDataTempleteList[editWindow.Index].Tags.Add(new TagTemplate()
+                    {
+                        TagValue = editWindow.TagList[i].TagValue,
+                        Color = editWindow.TagList[i].Color
+                    });
                 }
             }
             videoDataTempleteList[editWindow.Index].Comment = editWindow.CommentVideo;

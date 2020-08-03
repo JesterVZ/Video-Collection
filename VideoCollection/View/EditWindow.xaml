@@ -120,7 +120,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                <Border BorderThickness="0" Grid.Row="0" Grid.ColumnSpan="2" CornerRadius="12" BorderBrush="Black" Background="#FF00B251">
+                                <Border Name="TagTemplateBorder" BorderThickness="0" Grid.Row="0" Grid.ColumnSpan="2" CornerRadius="12" BorderBrush="Black" Background="{Binding Color}">
 
                                 </Border>
                                 <StackPanel Orientation="Horizontal">
