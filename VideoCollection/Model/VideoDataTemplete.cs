@@ -13,5 +13,6 @@ namespace VideoCollection.Model
         public DateTime CreationTime { get; set; }
         public List<TagTemplate> Tags { get; set; }
         public string Comment { get; set; }
+        public int PressingFrequency { get; set; }
     }
 }

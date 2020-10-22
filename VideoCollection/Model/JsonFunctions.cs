@@ -43,7 +43,7 @@ namespace VideoCollection.Model
                             jsonData[i].Tags = new List<TagTemplate>();
 
                         }
-                        FillingVideoDataTempleteListFromJson(jsonData[i].Directory, jsonData[i].VideoName, jsonData[i].Size, jsonData[i].CreationTime, jsonData[i].Tags, jsonData[i].Comment, videoDataTempletesList);
+                        FillingVideoDataTempleteListFromJson(jsonData[i].Directory, jsonData[i].VideoName, jsonData[i].Size, jsonData[i].CreationTime, jsonData[i].Tags, jsonData[i].Comment, jsonData[i].PressingFrequency, videoDataTempletesList);
                     }
                     listViewIndex.FillingListView(listView, videoDataTempletesList);
                 }
@@ -54,7 +54,7 @@ namespace VideoCollection.Model
                 File.Create(path);
             }
         }
-        public void FillingVideoDataTempleteListFromJson(string directory, string videoName, string size, DateTime creationTime, List<TagTemplate> tagTemplates, string comment, List<VideoDataTemplete> videoDataTempletesList)
+        public void FillingVideoDataTempleteListFromJson(string directory, string videoName, string size, DateTime creationTime, List<TagTemplate> tagTemplates, string comment, int pressingFrequency, List<VideoDataTemplete> videoDataTempletesList)
         {
             videoDataTempletesList.Add(new VideoDataTemplete()
             {
@@ -63,7 +63,8 @@ namespace VideoCollection.Model
                 Size = size,
                 Tags = tagTemplates,
                 CreationTime = creationTime,
-                Comment = comment
+                Comment = comment,
+                PressingFrequency = pressingFrequency
             });
         }
     }

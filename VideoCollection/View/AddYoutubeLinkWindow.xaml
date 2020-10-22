@@ -17,7 +17,7 @@
         <TextBlock Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16">Paste YouTube Link</TextBlock>
         <Grid Grid.Row="2">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBox Name="LinkTextBox" Grid.Row="2" Width="200" Height="30"></TextBox>
+                <TextBox Name="LinkTextBox" Grid.Row="2" Width="200" VerticalAlignment="Center"></TextBox>
                 <Button Height="30" Margin="30, 0, 0, 0" Click="Button_Click">Add video</Button>
             </StackPanel>
         </Grid>

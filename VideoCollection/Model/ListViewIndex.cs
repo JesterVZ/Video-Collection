@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,7 +14,9 @@ namespace VideoCollection.Model
         public void FillingListView(ListView listView, List<VideoDataTemplete> videoDataTempletesList)
         {
             listView.ItemsSource = videoDataTempletesList;
-            CollectionViewSource.GetDefaultView(listView.ItemsSource).Refresh();
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(listView.ItemsSource);
+            view.SortDescriptions.Add(new SortDescription("PressingFrequency", ListSortDirection.Descending));
+            //CollectionViewSource.GetDefaultView(listView.ItemsSource).Refresh();
         }
 
         public int GetHoverIndex(ListView listView)

@@ -20,7 +20,7 @@ namespace VideoCollection.View
         bool? dialogOk;
         OpenFileDialog fileDialog;
         readonly DispatcherTimer timer;
-        private List<VideoDataTemplete> videoDataTempleteList = new List<VideoDataTemplete>();
+        private readonly List<VideoDataTemplete> videoDataTempleteList = new List<VideoDataTemplete>();
         private readonly IListViewIndex IListViewIndex = new ListViewIndex();
         private readonly IJsonFunctions JsonFunctions = new JsonFunctions();
         public ContentView()
@@ -37,9 +37,13 @@ namespace VideoCollection.View
         private bool SearchFilter(object item)
         {
             if (String.IsNullOrEmpty(SearchTextBox.Text))
+            {
                 return true;
+            }
             else
-                return ((item as VideoDataTemplete).VideoName.IndexOf(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0);
+            {
+                return (item as VideoDataTemplete).VideoName.IndexOf(SearchTextBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+            }
         }
 
         void Timer_tick(object sender, EventArgs e)
@@ -113,6 +117,7 @@ namespace VideoCollection.View
             try
             {
                 AddVideoInMediaElement(new Uri(videoDataTempleteList[this.DataListView.SelectedIndex].Directory));
+                videoDataTempleteList[this.DataListView.SelectedIndex].PressingFrequency++; //учитывается нажание на видео
                 TitleTextBox.DataContext = new VideoDataTemplete()
                 {
                     VideoName = videoDataTempleteList[this.DataListView.SelectedIndex].VideoName
